@@ -1,0 +1,12 @@
+server:
+  forward-headers-strategy: framework
+  shutdown: graceful
+
+management:
+  health:
+    probes:
+      enabled: true
+
+spring:
+  application:
+    name: demo-service

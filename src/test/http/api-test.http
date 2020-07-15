@@ -1,0 +1,14 @@
+GET http://localhost/models/{{$randomInt}}
+Accept: application/json
+
+###
+
+GET http://localhost/models/{{$randomInt}}
+Accept: application/json
+
+###
+
+GET http://localhost/models/{{$randomInt}}
+Accept: application/json
+
+###

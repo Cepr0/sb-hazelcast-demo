@@ -1,0 +1,15 @@
+hazelcast:
+  cluster-name: demo
+  management-center:
+    enabled: true
+  network:
+    join:
+      multicast:
+        enabled: true
+#  cp-subsystem:
+#    cp-member-count: 3
+
+  map:
+    default:
+      time-to-live-seconds: 60
+

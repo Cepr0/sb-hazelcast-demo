@@ -1,0 +1,41 @@
+version: '3.3'
+
+services:
+  traefik:
+    image: traefik:v2.2
+    command: --api.insecure=true --providers.docker --log.level=debug
+    ports:
+      - "80:80"
+      - "8180:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  hazelcast-mgmt:
+    image: hazelcast/management-center:latest
+    environment:
+      - MC_ADMIN_USER=admin
+      - MC_ADMIN_PASSWORD=myPassword11
+      - JAVA_OPTS=-Dhazelcast.mc.healthCheck.enable=true
+      - MC_CONTEXT_PATH=/hazelcast
+#    ports:
+#      - "8280:8080"
+    labels:
+      - "traefik.http.services.hazelcast-mgmt.loadbalancer.healthcheck.path=/hazelcast/health"
+      - "traefik.http.services.hazelcast-mgmt.loadbalancer.healthcheck.port=8081"
+      - "traefik.http.services.hazelcast-mgmt.loadbalancer.healthcheck.interval=1s"
+      - "traefik.http.routers.hazelcast-mgmt-root.rule=PathPrefix(`/hazelcast`)"
+      - "traefik.http.routers.root.rule=Path(`/`)"
+      - "traefik.http.routers.root.middlewares=root@docker"
+      - "traefik.http.middlewares.root.replacepath.path=/hazelcast"
+
+  demo-service:
+    build: .
+    environment:
+      - JAVA_OPTS=--add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED --add-opens jdk.management/com.ibm.lang.management.internal=ALL-UNNAMED
+    links:
+      - hazelcast-mgmt
+    labels:
+      - "traefik.http.services.demo-service.loadbalancer.healthcheck.path=/actuator/health/readiness"
+      - "traefik.http.services.demo-service.loadbalancer.healthcheck.interval=1s"
+      - "traefik.http.routers.demo-service-models.rule=PathPrefix(`/models`)"
+
