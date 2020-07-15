@@ -11,22 +11,22 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   hazelcast-mgmt:
-    image: hazelcast/management-center:latest
+    image: hazelcast/management-center:3.12.7
     environment:
-      - MC_ADMIN_USER=admin
-      - MC_ADMIN_PASSWORD=myPassword11
+#      - MC_ADMIN_USER=admin
+#      - MC_ADMIN_PASSWORD=myPassword11
       - JAVA_OPTS=-Dhazelcast.mc.healthCheck.enable=true
-      - MC_CONTEXT_PATH=/hazelcast
+#      - MC_CONTEXT_PATH=/hazelcast
 #    ports:
 #      - "8280:8080"
     labels:
-      - "traefik.http.services.hazelcast-mgmt.loadbalancer.healthcheck.path=/hazelcast/health"
+      - "traefik.http.services.hazelcast-mgmt.loadbalancer.healthcheck.path=/hazelcast-mancenter/health"
       - "traefik.http.services.hazelcast-mgmt.loadbalancer.healthcheck.port=8081"
       - "traefik.http.services.hazelcast-mgmt.loadbalancer.healthcheck.interval=1s"
-      - "traefik.http.routers.hazelcast-mgmt-root.rule=PathPrefix(`/hazelcast`)"
+      - "traefik.http.routers.hazelcast-mgmt-root.rule=PathPrefix(`/hazelcast-mancenter`)"
       - "traefik.http.routers.root.rule=Path(`/`)"
       - "traefik.http.routers.root.middlewares=root@docker"
-      - "traefik.http.middlewares.root.replacepath.path=/hazelcast"
+      - "traefik.http.middlewares.root.replacepath.path=/hazelcast-mancenter"
 
   demo-service:
     build: .

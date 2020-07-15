@@ -1,6 +1,7 @@
 package io.github.cepr0.demo;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,15 +12,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("models")
 public class ModelController {
 
-    private final ModelService modelService;
+    private final ModelRepo modelRepo;
 
-    public ModelController(ModelService modelService) {
-        this.modelService = modelService;
+    public ModelController(ModelRepo modelRepo) {
+        this.modelRepo = modelRepo;
     }
 
     @GetMapping("/{id}")
-    public Model getById(@PathVariable int id) {
+    public ResponseEntity<Model> getById(@PathVariable int id) {
         log.info("[i] Retrieving a model #{}...", id);
-        return modelService.getById(id);
+        return ResponseEntity.of(modelRepo.findById(id));
+    }
+
+    @GetMapping
+    public Iterable<Model> getAll() {
+        log.info("[i] Retrieving all models...");
+        return modelRepo.findAll();
     }
 }
