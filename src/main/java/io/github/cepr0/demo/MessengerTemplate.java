@@ -5,10 +5,13 @@ import com.hazelcast.core.ITopic;
 import com.hazelcast.core.Message;
 import com.hazelcast.core.MessageListener;
 import lombok.NonNull;
+import lombok.SneakyThrows;
 
 import java.io.Serializable;
 import java.util.concurrent.locks.Lock;
 import java.util.function.Consumer;
+
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class MessengerTemplate<T extends Serializable> implements MessageListener<T> {
 
@@ -27,12 +30,14 @@ public class MessengerTemplate<T extends Serializable> implements MessageListene
         this.topic.addMessageListener(this);
     }
 
+    @SneakyThrows
     @Override
     public void onMessage(Message<T> message) {
         if (lock.tryLock()) {
             try {
                 messageHandler.accept(message.getMessageObject());
             } finally {
+                MILLISECONDS.sleep(200); // to prevent over instances from handling
                 lock.unlock();
             }
         }
