@@ -12,21 +12,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("models")
 public class ModelController {
 
-    private final ModelRepo modelRepo;
+    private final ModelService modelService;
 
-    public ModelController(ModelRepo modelRepo) {
-        this.modelRepo = modelRepo;
+    public ModelController(ModelService modelService) {
+        this.modelService = modelService;
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Model> getById(@PathVariable int id) {
         log.info("[i] Retrieving a model #{}...", id);
-        return ResponseEntity.of(modelRepo.findById(id));
+        return ResponseEntity.of(modelService.getById(id));
     }
 
     @GetMapping
     public Iterable<Model> getAll() {
         log.info("[i] Retrieving all models...");
-        return modelRepo.findAll();
+        return modelService.getAll();
     }
 }

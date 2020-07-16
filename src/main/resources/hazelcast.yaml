@@ -1,5 +1,7 @@
 hazelcast:
   cluster-name: demo
+  cp-subsystem:
+    cp-member-count: 3
   management-center:
     enabled: true
     url: http://hazelcast-mgmt:8080/hazelcast-mancenter
