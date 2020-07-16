@@ -1,7 +1,6 @@
 package io.github.cepr0.demo;
 
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.ITopic;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,18 +20,22 @@ public class ModelService {
 
     private final ModelRepo modelRepo;
     private final Lock lock;
-    private final ITopic<Integer> modelNotFoundTopic;
+    private final MessengerTemplate<Integer> modelNotFoundMessenger;
 
-    public ModelService(ModelRepo modelRepo, @Qualifier("hazelcastInstance") HazelcastInstance hz, ITopic<Integer> modelNotFoundTopic) {
+    public ModelService(
+            ModelRepo modelRepo,
+            @Qualifier("hazelcastInstance") HazelcastInstance hz,
+            MessengerTemplate<Integer> modelNotFoundMessenger
+    ) {
         this.modelRepo = modelRepo;
         this.lock = hz.getCPSubsystem().getLock("modelLock");
-        this.modelNotFoundTopic = modelNotFoundTopic;
+        this.modelNotFoundMessenger = modelNotFoundMessenger;
     }
 
     public Optional<Model> getById(int id) {
         return modelRepo.findById(id)
                 .or(() -> {
-                    modelNotFoundTopic.publish(id);
+                    modelNotFoundMessenger.publish(id);
                     log.info("[i] Published message ModelNotFound #{}", id);
                     return Optional.empty();
                 });
