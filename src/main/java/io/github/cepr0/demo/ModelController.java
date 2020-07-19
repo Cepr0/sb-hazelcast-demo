@@ -1,7 +1,6 @@
 package io.github.cepr0.demo;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +18,9 @@ public class ModelController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Model> getById(@PathVariable int id) {
+    public Model getById(@PathVariable int id) {
         log.info("[i] Retrieving a model #{}...", id);
-        return ResponseEntity.of(modelService.getById(id));
+        return modelService.getById(id);
     }
 
     @GetMapping

@@ -1,19 +1,9 @@
-GET http://localhost/models/{{$randomInt}}
+GET http://{{demo-service}}/models/{{$randomInt}}
 Accept: application/json
 
 ###
 
-GET http://localhost/models/{{$randomInt}}
-Accept: application/json
-
-###
-
-GET http://localhost/models/{{$randomInt}}
-Accept: application/json
-
-###
-
-GET http://localhost/models
+GET http://{{demo-service}}/models
 Accept: application/json
 
 ###

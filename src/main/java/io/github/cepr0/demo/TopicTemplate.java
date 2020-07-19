@@ -5,45 +5,38 @@ import com.hazelcast.core.ITopic;
 import com.hazelcast.core.Message;
 import com.hazelcast.core.MessageListener;
 import lombok.NonNull;
-import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serializable;
-import java.util.concurrent.locks.Lock;
 import java.util.function.Consumer;
 
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
+@Slf4j
+public class TopicTemplate<T extends Serializable> implements MessageListener<T> {
 
-public class MessengerTemplate<T extends Serializable> implements MessageListener<T> {
-
+    private final String topicName;
     private final Consumer<T> messageHandler;
-    private final Lock lock;
     private final ITopic<T> topic;
 
-    public MessengerTemplate(
+    public TopicTemplate(
             @NonNull HazelcastInstance hz,
             @NonNull String topicName,
             @NonNull Consumer<T> messageHandler
     ) {
+        this.topicName = topicName;
         this.messageHandler = messageHandler;
-        this.lock = hz.getCPSubsystem().getLock(topicName + "Lock");
         this.topic = hz.getTopic(topicName);
         this.topic.addMessageListener(this);
+        log.debug("[d] A TopicTemplate for Topic '{}' has been created", topicName);
     }
 
-    @SneakyThrows
     @Override
     public void onMessage(Message<T> message) {
-        if (lock.tryLock()) {
-            try {
-                messageHandler.accept(message.getMessageObject());
-            } finally {
-                MILLISECONDS.sleep(200); // to prevent over instances from handling
-                lock.unlock();
-            }
-        }
+        log.debug("[d] A message has been received from Topic '{}'", topicName);
+        messageHandler.accept(message.getMessageObject());
+        log.debug("[d] A message from Topic '{}' has been processed", topicName);
     }
 
-    public void publish(T message) {
+    public void publish(@NonNull T message) {
         topic.publish(message);
     }
 }
