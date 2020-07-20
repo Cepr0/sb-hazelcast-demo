@@ -11,12 +11,13 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   hazelcast-mgmt:
-    image: hazelcast/management-center:3.12.7
+#    image: hazelcast/management-center:3.12.7
+    image: hazelcast/management-center:4.0.3
     environment:
-#      - MC_ADMIN_USER=admin
-#      - MC_ADMIN_PASSWORD=myPassword11
+      - MC_ADMIN_USER=admin
+      - MC_ADMIN_PASSWORD=myPassword11
       - JAVA_OPTS=-Dhazelcast.mc.healthCheck.enable=true
-#      - MC_CONTEXT_PATH=/hazelcast
+      - MC_CONTEXT_PATH=/hazelcast-mancenter
 #    ports:
 #      - "8280:8080"
     labels:

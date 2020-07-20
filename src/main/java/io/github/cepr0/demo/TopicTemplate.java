@@ -1,9 +1,9 @@
 package io.github.cepr0.demo;
 
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.ITopic;
-import com.hazelcast.core.Message;
-import com.hazelcast.core.MessageListener;
+import com.hazelcast.topic.ITopic;
+import com.hazelcast.topic.Message;
+import com.hazelcast.topic.MessageListener;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
