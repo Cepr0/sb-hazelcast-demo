@@ -1,10 +1,9 @@
 package io.github.cepr0.demo;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -27,5 +26,11 @@ public class ModelController {
     public Iterable<Model> getAll() {
         log.info("[i] Retrieving all models...");
         return modelService.getAll();
+    }
+
+    @PostMapping
+    public Model create(@RequestBody Map<String, Object> body) {
+        log.info("[i] Creating a new model...");
+        return modelService.create((int) body.get("id"));
     }
 }

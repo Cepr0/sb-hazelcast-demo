@@ -21,4 +21,8 @@ public class ModelService {
     public Iterable<Model> getAll() {
         return modelRepo.findAll(Sort.by("updatedAt").descending());
     }
+
+    public Model create(int id) {
+        return modelRepo.save(new Model(id));
+    }
 }

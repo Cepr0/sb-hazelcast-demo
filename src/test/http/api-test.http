@@ -7,3 +7,19 @@ GET http://{{demo-service}}/models
 Accept: application/json
 
 ###
+
+GET http://{{demo-service}}/models/111
+Accept: application/json
+
+###
+
+POST http://{{demo-service}}/models
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": 111
+}
+
+###
+

@@ -12,7 +12,7 @@ services:
 
   hazelcast-mgmt:
 #    image: hazelcast/management-center:3.12.7
-    image: hazelcast/management-center:4.0.3
+    image: hazelcast/management-center:latest
     environment:
       - MC_ADMIN_USER=admin
       - MC_ADMIN_PASSWORD=myPassword11
