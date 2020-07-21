@@ -1,8 +1,8 @@
 hazelcast:
   cluster-name: dev
 
-  cp-subsystem:
-    cp-member-count: 3
+#  cp-subsystem:
+#    cp-member-count: 3
 
   management-center:
     enabled: true

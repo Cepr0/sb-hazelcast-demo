@@ -1,4 +1,4 @@
-package io.github.cepr0.demo;
+package io.github.cepr0.demo.template;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.topic.ITopic;

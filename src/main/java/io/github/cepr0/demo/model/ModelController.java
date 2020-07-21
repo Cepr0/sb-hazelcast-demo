@@ -1,4 +1,4 @@
-package io.github.cepr0.demo;
+package io.github.cepr0.demo.model;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,7 @@ public class ModelController {
     }
 
     @GetMapping("/{id}")
-    public Model getById(@PathVariable int id) {
+    public Model getById(@PathVariable long id) {
         log.info("[i] Retrieving a model #{}...", id);
         return modelService.getById(id);
     }
@@ -31,6 +31,6 @@ public class ModelController {
     @PostMapping
     public Model create(@RequestBody Map<String, Object> body) {
         log.info("[i] Creating a new model...");
-        return modelService.create((int) body.get("id"));
+        return modelService.create((long) body.get("id"));
     }
 }

@@ -1,4 +1,4 @@
-package io.github.cepr0.demo;
+package io.github.cepr0.demo.template;
 
 import com.hazelcast.collection.IQueue;
 import com.hazelcast.collection.ItemEvent;
